@@ -7,6 +7,8 @@ node_modules
 /dist
 /quasar.config.*.temporary.compiled*
 
+
+
 # Cordova related directories and files
 /src-cordova/node_modules
 /src-cordova/platforms
@@ -31,3 +33,6 @@ yarn-error.log*
 
 # local .env files
 .env.local*
+
+
+src/assets/a1.png
