@@ -12,10 +12,8 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Программное обеспечение для внедрения стеганографического контейнера в цифровое изображение
         </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
@@ -28,7 +26,7 @@
         <q-item-label
           header
         >
-          Essential Links
+          Главное меню
         </q-item-label>
 
         <EssentialLink
@@ -51,46 +49,22 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
+    title: 'Работа со стегоконтейнером',
+    caption: '(внедрение, извлечение)',
     icon: 'school',
-    link: 'https://quasar.dev'
+    link: '/#'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
+    title: 'Определение оптимальных параметров',
+    caption: '(оценка, детектор контейнера)',
     icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
+    link: '/calc_params'
   },
   {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
+    title: 'О проекте',
+    caption: '@StegoAI',
     icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+    link: '/about'
   }
 ]
 
