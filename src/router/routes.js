@@ -15,6 +15,13 @@ const routes = [
     ]
   },
   {
+    path: '/extract',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/ExtractPage.vue') }
+    ]
+  },
+  {
     path: '/about',
     component: () => import('layouts/MainLayout.vue'),
     children: [

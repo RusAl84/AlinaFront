@@ -12,22 +12,15 @@
         />
 
         <q-toolbar-title>
-          Программное обеспечение для внедрения стеганографического контейнера в цифровое изображение
+          Программное обеспечение для внедрения стеганографического контейнера в
+          цифровое изображение
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label
-          header
-        >
-          Главное меню
-        </q-item-label>
+        <q-item-label header> Главное меню </q-item-label>
 
         <EssentialLink
           v-for="link in essentialLinks"
@@ -44,47 +37,53 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import { defineComponent, ref } from "vue";
+import EssentialLink from "components/EssentialLink.vue";
 
 const linksList = [
   {
-    title: 'Работа со стегоконтейнером',
-    caption: '(внедрение, извлечение)',
-    icon: 'school',
-    link: '/#'
+    title: "Упаковка стегоконтейнера",
+    caption: "(внедрение стегоконтейнера)",
+    icon: "print",
+    link: "/#",
   },
   {
-    title: 'Определение оптимальных параметров',
-    caption: '(оценка, детектор контейнера)',
-    icon: 'record_voice_over',
-    link: '/calc_params'
+    title: "Извлечение стегоконтейнером",
+    caption: "(извлечение стегоконтейнера)",
+    icon: "font_download",
+    link: "/extract",
   },
   {
-    title: 'О проекте',
-    caption: '@StegoAI',
-    icon: 'public',
-    link: '/about'
-  }
-]
+    title: "Рассчет параметров",
+    caption: "(оценка, детектор контейнера)",
+    icon: "record_voice_over",
+    link: "/calc_params",
+  },
+  {
+    title: "О проекте",
+    caption: "@StegoAI",
+    icon: "public",
+    link: "/about",
+  },
+];
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: "MainLayout",
 
   components: {
-    EssentialLink
+    EssentialLink,
   },
 
-  setup () {
-    const leftDrawerOpen = ref(false)
+  setup() {
+    const leftDrawerOpen = ref(false);
 
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-})
+      toggleLeftDrawer() {
+        leftDrawerOpen.value = !leftDrawerOpen.value;
+      },
+    };
+  },
+});
 </script>

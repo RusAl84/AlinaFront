@@ -5,32 +5,32 @@
         <div class="q-pa-md row items-start q-gutter-md">
           <q-card class="my-card" style="min-width: 450px">
             <img
-              src="~assets/a1.png"
+              :src="in_img_path"
               style="max-width: 430px; max-height: 280px"
             />
 
             <q-card-section>
-              <div class="text-h6">Our Changing Planet</div>
-              <div class="text-subtitle2">by John Doe</div>
+              <div class="text-h6">{{ in_param }}</div>
             </q-card-section>
 
             <q-card-section class="q-pt-none">
-              {{ lorem }}
+              {{ in_img_path }}
             </q-card-section>
           </q-card>
           <q-card class="my-card" style="min-width: 450px">
-            <img src="https://cdn.quasar.dev/img/mountains.jpg" />
+            <img
+              :src="out_img_path"
+              style="max-width: 430px; max-height: 280px"
+            />
 
             <q-card-section>
-              <div class="text-h6">Our Changing Planet</div>
-              <div class="text-subtitle2">by John Doe</div>
+              <div class="text-h6">{{ out_param }}</div>
             </q-card-section>
 
             <q-card-section class="q-pt-none">
-              {{ lorem }}
+              {{ out_img_path }}
             </q-card-section>
           </q-card>
-
           <q-card class="my-card" style="min-width: 900px">
             <div class="flexrow">
               <div>
@@ -138,23 +138,27 @@
                   </div>
                 </q-card-section>
                 <q-card-section>
-                  <q-btn color="primary" label="Поиск" @click="onFind_data" />
+                  <q-uploader
+                    :url="hostae_uploadimg"
+                    label="Выберите изображение для внедрения стегоконтейнера .png/*"
+                    square
+                    flat
+                    bordered
+                    single
+                    @uploaded="fileUploaded"
+                    accept=".png, images/*"
+                    style="min-width: 600px; max-width: 600px"
+                  />
+                </q-card-section>
+                <q-card-section>
+                  <q-btn
+                    color="primary"
+                    label="Внедрить стего контейнер"
+                    @click="onProc"
+                  />
                 </q-card-section>
               </div>
             </div>
-            <q-card-section>
-              <q-uploader
-                :url="hostae_uploadae"
-                label="Выберите изображение для внедрения стегоконтейнера .png/*"
-                square
-                flat
-                bordered
-                single
-                @uploaded="fileUploaded"
-                accept=".png, images/*"
-                style="min-width: 600px; max-width: 600px"
-              />
-            </q-card-section>
           </q-card>
         </div>
       </q-card>
@@ -165,23 +169,20 @@
 <script>
 import { defineComponent, ref } from "vue";
 import axios from "axios";
-import * as cfg from "../config.js";
 
 export default {
   data() {
     return {
       file: "",
-      hostae: cfg.hostae,
-      hostae_uploadae: cfg.hostae_uploadae,
-      chatmessages: "",
-      proc_text: ref(""),
+      hostae_uploadimg: "http://localhost:5000/uploadimg",
+      input_text: ref(
+        "Завязался разговор. Готовность белокурого молодого человека в швейцарском плаще отвечать на все вопросы своего черномазого соседа была удивительная и без всякого подозрения совершенной небрежности, неуместности и праздности иных вопросов. Отвечая, он объявил, между прочим, что действительно долго не был в России, с лишком четыре года, что отправлен был за границу по болезни, по какой-то странной нервной болезни, вроде падучей или виттовой пляски, каких-то дрожаний и судорог. Слушая его, черномазый несколько раз усмехался; особенно засмеялся он, когда на вопрос: «Что же, вылечили?» — белокурый отвечал, что «нет, не вылечили»."
+      ),
+      in_img_path: ref("http://127.0.0.1:5000/uploads/default.png"),
+      out_img_path: ref("http://127.0.0.1:5000/uploads/default.png"),
+      in_param: ref(""),
+      out_param: ref(""),
       ttype: ref(""),
-      resp_text: ref(""),
-      resp_data: ref(""),
-      all_data: ref([{}]),
-      ae_data: ref([{}]),
-      filename: ref(""),
-      options: ["RAKE", "YAKE", "BERT"],
     };
   },
   methods: {
@@ -189,65 +190,26 @@ export default {
       this.file = this.$refs.file.files[0];
     },
     fileUploaded({ files, xhr }) {
+      // console.log(xhr.response);
       let data = JSON.parse(xhr.response);
-      this.chatmessages = data["text"];
-      this.filename = data["filename"];
+      this.in_img_path = "http://127.0.0.1:5000/uploads/default.png";
+      this.in_img_path = data["in_img_path"];
+      this.in_param = data["in_param"];
     },
     async onProc() {
+      console.log("response.data");
       const response = await axios({
-        method: "post",
-        url: cfg.hostae + "get_pattern",
+        method: "POST",
+        url: "http://localhost:5000/stego_proc",
         data: {
-          text: this.proc_text,
+          text: this.input_text,
         },
       });
-      console.log(response);
-      this.resp_data = response.data;
-      this.resp_text = response.data.print_text;
-    },
-    async onProcAdd() {
-      const response = await axios({
-        method: "post",
-        url: cfg.hostae + "get_pattern_add",
-        data: this.resp_data,
-      });
-      this.all_data = response.data;
-      console.log("this.resp_data");
-      console.log(this.all_data);
-    },
-    async onLoadDB() {
-      const response = await axios({
-        method: "get",
-        url: cfg.hostae + "load_db",
-        data: this.resp_data,
-      });
-      this.all_data = response.data;
-
-      console.log(this.all_data);
-    },
-    async onClearDB() {
-      const response = await axios({
-        method: "get",
-        url: cfg.hostae + "clear_db",
-      });
-      console.log(response);
-    },
-    async onFindCL() {
-      const response = await axios({
-        method: "post",
-        url: cfg.hostae + "findae",
-        data: {
-          filename: this.filename,
-          type: this.ttype,
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      // console.log(response);
-      this.ae_data = response.data;
-      console.log("ae_data");
-      console.log(this.ae_data);
+      console.log("response.data=======================");
+      console.log(response.data);
+      this.out_img_path = "http://127.0.0.1:5000/uploads/default.png";
+      this.out_img_path = response.data.out_img_path;
+      this.out_param = response.data.out_param;
     },
   },
 };
