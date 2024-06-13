@@ -32,13 +32,13 @@
         <q-card-section>
           <q-uploader
             :url="hostae_uploadimg"
-            label="Выберите ключ для дешифровки .key/*"
+            label="Выберите ключ для дешифровки .dat/*"
             square
             flat
             bordered
             single
-            @uploaded="fileUploaded"
-            accept=".key, images/*"
+            @uploaded="fileUploadedKey"
+            accept=".dat, keys/*"
             style="min-width: 600px; max-width: 600px"
           />
         </q-card-section>
@@ -154,6 +154,7 @@ export default {
     return {
       file: "",
       hostae_uploadimg: "http://localhost:5000/uploadimg",
+      hostae_uploadkey: "http://localhost:5000/uploadkey",
       in_img_path: ref("http://127.0.0.1:5000/uploads/default.png"),
       out_img_path: ref("http://127.0.0.1:5000/uploads/default.png"),
       in_param: ref(""),
@@ -177,26 +178,19 @@ export default {
       this.in_img_path = data["in_img_path"];
       this.in_param = data["in_param"];
     },
+    fileUploadedKey({ files, xhr }) {
+      console.log("key uploaded");
+    },
     async onProc() {
       console.log("response.data");
       const response = await axios({
         method: "POST",
-        url: "http://localhost:5000/stego_reseach",
+        url: "http://localhost:5000/stego_decode",
         data: {
           text: this.input_text,
         },
       });
-      console.log("response.data=======================");
-      console.log(response.data);
-      this.out_img_path = "http://127.0.0.1:5000/uploads/default.png";
-      this.out_img_path = response.data.out_img_path;
-      this.out_param = response.data.out_param;
-      this.ast = response.data.ast;
-      this.ars = response.data.ars;
-      this.asz = response.data.asz;
-      this.amsz = response.data.amsz;
-      this.adif = response.data.adif;
-      this.acomp = response.data.acomp;
+      this.input_text = response.data.decode;
     },
   },
 };
@@ -213,7 +207,6 @@ export default {
   height: 90%
 
 .box
-
   justify-content: center
   align-content: center
   align-items: center
